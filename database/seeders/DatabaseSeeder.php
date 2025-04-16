@@ -19,5 +19,10 @@ class DatabaseSeeder extends Seeder
 
        \App\Models\Author::factory(7)->create();
        \App\Models\Book::factory(7)->create();
+
+       $this->call([
+        UserSeeder::class,
+        CategorySeeder::class
+       ]);
     }
 }

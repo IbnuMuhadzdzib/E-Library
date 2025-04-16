@@ -14,6 +14,8 @@
             </div>
             </div>
         </div>
+
+        @auth
         <div class="hidden md:block">
             <div class="ml-4 flex items-center md:ml-6">
             <button type="button" class="relative rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
@@ -44,9 +46,11 @@
                 x-transition:leave-end="opacity-0 scale-95"
                 class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 ring-1 shadow-lg ring-black/5 focus:outline-hidden" role="menu" aria-orientation="vertical" aria-labelledby="user-menu-button" tabindex="-1">
                 <!-- Active: "bg-gray-100 outline-hidden", Not Active: "" -->
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">Your Profile</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-1">Settings</a>
-                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-2">Sign out</a>
+                <a href="#" class="block px-4 py-2 text-sm text-gray-700" role="menuitem" tabindex="-1" id="user-menu-item-0">{{ auth()->user()->name }}</a>
+                <form action="/logout" method="POST">
+                    @csrf
+                    <button type="submit" class="block px-4 py-2 text-sm text-gray-700">Sign Out</button>
+                </form>
                 </div>
             </div>
             </div>
@@ -65,8 +69,15 @@
             </button>
         </div>
         </div>
-    </div>
+        @else
+            <a href="/login" class="bg-indigo-500 text-white px-4 py-2 rounded">
+                Login
+            </a>
+        @endauth
 
+</div>
+
+@auth
     <!-- Mobile menu, show/hide based on menu state. -->
     <div x-show="isOpen" class="md:hidden" id="mobile-menu">
         <div class="space-y-1 px-2 pt-2 pb-3 sm:px-3">
@@ -81,8 +92,8 @@
             <img class="size-10 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
             </div>
             <div class="ml-3">
-            <div class="text-base/5 font-medium text-white">Tom Cook</div>
-            <div class="text-sm font-medium text-gray-400">tom@example.com</div>
+            <div class="text-base/5 font-medium text-white">{{ auth()->user()->name }}</div>
+            <div class="text-sm font-medium text-gray-400">{{ auth()->user()->email }}</div>
             </div>
             <button type="button" class="relative ml-auto shrink-0 rounded-full bg-gray-800 p-1 text-gray-400 hover:text-white focus:ring-2 focus:ring-white focus:ring-offset-2 focus:ring-offset-gray-800 focus:outline-hidden">
             <span class="absolute -inset-1.5"></span>
@@ -93,10 +104,13 @@
             </button>
         </div>
         <div class="mt-3 space-y-1 px-2">
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Your Profile</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Settings</a>
-            <a href="#" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</a>
+            <form action="/logout" method="POST">
+            @csrf
+            <button type="submit" class="block rounded-md px-3 py-2 text-base font-medium text-gray-400 hover:bg-gray-700 hover:text-white">Sign out</button>
+            </form>
         </div>
         </div>
     </div>
+@endauth
+    
 </nav>

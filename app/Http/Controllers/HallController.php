@@ -10,12 +10,25 @@ use Illuminate\Http\Request;
 class HallController extends Controller
 {
     public function index()
-    {
-        $title = 'Hall';
-        $books = Book::with(['author', 'category'])->latest()->paginate(9); // Include relationships
+{
+    $title = '';
 
-        return view('hall', compact('title', 'books'));
+    if (request('category')) {
+        $category = Category::firstWhere('slug', request('category'));
+        $title = 'of ' . $category->name;
     }
+
+    if (request('author')) {
+        $author = Author::firstWhere('slug', request('author'));
+        $title = 'by ' . $author->name;
+    }
+
+    $title = 'Hall ' . $title;
+    $books = Book::latest()->filter(request(['search', 'category', 'author']))->paginate(10)->withQueryString();
+
+    return view('hall', compact('books', 'title'));
+}
+
 
     public function detailBook(Book $book)
     {

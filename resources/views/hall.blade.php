@@ -1,6 +1,31 @@
 @extends('layouts.main')
 
 @section('content')
+    {{-- Search Section --}}
+    <div class="max-w-3xl mx-auto mb-6">
+        <form action="" method="" class="flex items-center bg-white shadow-md rounded-lg overflow-hidden">
+            <input 
+                type="text"  
+                name="search"
+                class="w-full px-4 py-2 text-gray-700 focus:outline-none" 
+                placeholder="Cari buku..." 
+                value=""
+                autocomplete="off"
+            />
+            @if (request('category'))
+                <input type="hidden" name="category" value="{{ request('category') }}">
+            @endif
+
+            @if (request('author'))
+                <input type="hidden" name="author" value="{{ request('author') }}">
+            @endif
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 hover:bg-blue-600">
+                <i class="fa-solid fa-search"></i>
+            </button>
+        </form>
+    </div>
+
+    @if ($books->count())
     {{-- Hero Section --}}
     <div class="max-w-4xl mx-auto mb-18">
         <div class="overflow-hidden rounded-lg shadow-lg max-h-[400px]">
@@ -50,6 +75,9 @@
             @endforeach 
         </div>
     </div>
+    @else
+    <p>Books Not Found</p>
+    @endif
 
     {{-- Pagination --}}
     <div class="mt-9">
