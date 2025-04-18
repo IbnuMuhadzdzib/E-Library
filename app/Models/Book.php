@@ -19,24 +19,24 @@ class Book extends Model
     protected $with = ['author', 'category'];
 
     public function scopeFilter($query, array $filters)
-{
-    $query->when($filters['search'] ?? false, function ($query, $search) {
-        return $query->where('name', 'like', '%' . $search . '%')
-                     ->orWhere('body', 'like', '%' . $search . '%');
-    });
+    {
+        $query->when($filters['search'] ?? false, function ($query, $search) {
+            return $query->where('name', 'like', '%' . $search . '%')
+            ->orWhere('body', 'like', '%' . $search . '%');
+        });
 
-    $query->when($filters['category'] ?? false, function ($query, $category) {
-        return $query->whereHas('category', fn ($query) =>
-            $query->where('slug', $category)
-        );
-    });
+        $query->when($filters['category'] ?? false, function ($query, $category) {
+            return $query->whereHas('category', fn ($query) => 
+                $query->where('slug', $category)
+            );
+        });
 
-    $query->when($filters['author'] ?? false, function ($query, $author) {
-        return $query->whereHas('author', fn ($query) =>
-            $query->where('slug', $author)
-        );
-    });
-}
+        $query->when($filters['author'] ?? false, function ($query, $author) {
+            return $query->whereHas('author', fn ($query) => 
+                $query->where('slug', $author)
+            );
+        });
+    }
 
     public function author() {
         return $this->belongsTo(Author::class);
